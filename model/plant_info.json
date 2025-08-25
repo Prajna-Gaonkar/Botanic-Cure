@@ -1,0 +1,6 @@
+{
+  "aloe_vera": {"botanical":"Aloe barbadensis","uses":"Skin healing, digestion","growing_areas":"Tropical, subtropical"},
+  "curry_leaves": {"botanical":"Murraya koenigii","uses":"Digestive, antioxidant","growing_areas":"South Asia"},
+  "hibiscus": {"botanical":"Hibiscus rosa-sinensis","uses":"Hair care, blood pressure support","growing_areas":"Tropical regions"},
+  "neem": {"botanical":"Azadirachta indica","uses":"Antibacterial, anti-inflammatory","growing_areas":"Indian subcontinent"}
+}
