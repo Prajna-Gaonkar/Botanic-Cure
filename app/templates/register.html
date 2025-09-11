@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reg_style.css') }}">
+    <script src=""{{ url_for('static', filename='js/register.js') }}""></script>
+    <!--- -->
+    <title>Register | Botanic Cure</title>
+</head>
+<body>
+    <div class="container">
+    <div class="Register">
+        <div class="header">
+         <span class="icon">🍃</span>
+          Botanic Cure
+        </div>
+        <div class="register-header">
+            <h2 style="text-align: center; color: black;">Register</h2>
+        </div>
+
+        <!-- ✅ REGISTER FORM -->
+        <form method="POST" action="/register" class="register-form" autocomplete="off">
+            <div class="input-box">
+                <input type="text" name="username" class="input-field" placeholder="Username" required>
+            </div>
+            <div class="input-box">
+                <input type="text" name="phone" class="input-field" placeholder="Phone Number" required>
+            </div>
+            <div class="input-box">
+                <input type="email" name="email" class="input-field" placeholder="Email" required>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" class="input-field" placeholder="Password" required>
+            </div>
+            <div class="input-box">
+                <input type="password" name="confirm_password" class="input-field" placeholder="Confirm Password" required>
+            </div>
+        
+            <div class="form-cols">
+                <div class="col-1" style=" text-align: center; ">
+                    <input type="checkbox" id="agree" required>
+                    <label for="agree"> I agree to terms & conditions</label>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="input-box">
+                <button type="submit" class="btn-submit" id="SignUpBtn">Sign Up</button>
+            </div>
+            <div class="switch-form">
+                <span>Already have an account? <a href="{{ url_for('login') }}">Login</a></span>
+            </div>
+        </form>
+        <!-- ✅ END REGISTER FORM -->
+
+    </div>
+    </div>
+</body>
+</html>
