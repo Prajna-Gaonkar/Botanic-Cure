@@ -1,5 +1,4 @@
-# app/app.py
-import os, uuid, json
+import os, uuid, json, traceback
 import mysql.connector
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_bcrypt import Bcrypt
@@ -47,15 +46,21 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
-        user = cursor.fetchone()
+        try:
+            cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+            user = cursor.fetchone()
 
-        if user and bcrypt.check_password_hash(user["password_hash"], password):
-            session["user_id"] = user["id"]
-            session["username"] = user["username"]
-            return redirect(url_for("home"))
-        else:
-            return render_template("index.html", error="Invalid credentials")
+            if user and bcrypt.check_password_hash(user["password_hash"], password):
+                session["user_id"] = user["id"]
+                session["username"] = user["username"]
+                return redirect(url_for("home"))
+            else:
+                return render_template("index.html", error="Invalid email or password")
+
+        except Exception as e:
+            # 👀 Show and log exact error
+            traceback.print_exc()
+            return render_template("index.html", error=f"Something went wrong: {e}")
 
     return render_template("index.html")
 
@@ -68,13 +73,18 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        # hash the password
-        hashed_pw = bcrypt.generate_password_hash(password).decode("utf-8")
+        try:
+            # Hash password before saving
+            hashed_pw = bcrypt.generate_password_hash(password).decode("utf-8")
 
-        cursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
-                       (username, email, hashed_pw))
-        conn.commit()
-        return redirect(url_for("login"))
+            cursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+                           (username, email, hashed_pw))
+            conn.commit()
+            return redirect(url_for("login"))
+
+        except Exception as e:
+            traceback.print_exc()
+            return render_template("register.html", error=f"Something went wrong: {e}")
 
     return render_template("register.html")
 
@@ -89,6 +99,7 @@ def home():
         file = request.files.get("leaf_image")
         if not file:
             return render_template("home.html", error="No file uploaded.", username=session["username"])
+
         ext = os.path.splitext(file.filename)[1].lower()
         if ext not in [".jpg", ".jpeg", ".png"]:
             return render_template("home.html", error="Unsupported file type.", username=session["username"])
@@ -132,7 +143,7 @@ def feedback():
         return redirect(url_for("login"))
 
     feedback_text = request.form["feedback"]
-    cursor.execute("INSERT INTO feedback (user_id, feedback_text) VALUES (%s, %s)", 
+    cursor.execute("INSERT INTO feedback (user_id, feedback_text) VALUES (%s, %s)",
                    (session["user_id"], feedback_text))
     conn.commit()
     return redirect(url_for("home"))
