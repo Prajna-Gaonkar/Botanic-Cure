@@ -1,39 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const submitBtn = document.querySelector(".submit-btn");
+    const loginForm = document.querySelector("form");
+    const submitBtn = loginForm.querySelector(".submit-btn");
+    
+    loginForm.addEventListener("submit", async (event) => {
+        // Don't prevent default form submission - let the form submit normally
+        // This allows the server to handle the response and flash messages
+        
+        // Disable the submit button to prevent double submission
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Signing in...";
 
-    submitBtn.addEventListener("click", async (event) => {
-        event.preventDefault(); // stop form reload
-
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        if (!email || !password) {
-            alert("Please enter both email and password.");
-            return;
-        }
-
-        try {
-            const response = await fetch("/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                // login successful → redirect to home
-                window.location.href = "/";
-            } else {
-                // login failed → show error
-                alert(result.error || "Login failed. Please try again.");
-            }
-
-        } catch (err) {
-            console.error("Error:", err);
-            alert("Something went wrong. Please try again later.");
-        }
+        // Re-enable the button after 2 seconds (in case of error)
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Sign In";
+        }, 2000);
     });
 });
