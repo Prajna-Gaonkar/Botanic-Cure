@@ -1,5 +1,9 @@
 import os
 from flask import Flask
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
