@@ -6,7 +6,8 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 # Constants
 IMG_SIZE = (299, 299)
-THRESHOLD = 0.75  # Confidence threshold for predictions
+THRESHOLD = 0.6  # Confidence threshold for predictions (lowered to show likely candidates)
+TOP_K = 3
 
 # Load model and label map
 MODEL_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model", "xception_botanicure.h5")
@@ -17,23 +18,35 @@ with open(LABELMAP_FILE) as f:
     inv_map = json.load(f)
 
 def predict_image(img_path):
-    """
-    Predict the plant type from an image file
-    
-    Args:
-        img_path (str): Path to the image file
-        
-    Returns:
-        dict: Prediction result with status, label (if recognized), and confidence
+    """Predict the plant type from an image file and return top-k candidates.
+
+    Returns a dict with:
+      - status: 'recognized' or 'unknown'
+      - label, confidence for the top result (if available)
+      - top_k: list of (label, confidence) tuples in descending order
     """
     img = load_img(img_path, target_size=IMG_SIZE)
     arr = img_to_array(img) / 255.0
     arr = np.expand_dims(arr, 0)
     probs = model.predict(arr)[0]
-    idx = int(np.argmax(probs))
-    confidence = float(np.max(probs))
-    label = inv_map.get(str(idx), inv_map.get(idx, None))
-    
-    if confidence < THRESHOLD:
-        return {"status": "unknown", "confidence": confidence}
-    return {"status": "recognized", "label": label, "confidence": confidence}
+
+    # Get top-k indices and confidences
+    top_idxs = np.argsort(probs)[::-1][:TOP_K]
+    top_probs = probs[top_idxs]
+    top_labels = [inv_map.get(str(int(i)), inv_map.get(int(i), str(i))) for i in top_idxs]
+    top_k = [(label, float(conf)) for label, conf in zip(top_labels, top_probs)]
+
+    best_idx = int(top_idxs[0])
+    best_conf = float(top_probs[0])
+    best_label = top_labels[0]
+
+    # Debug: print top candidates (visible in server logs)
+    try:
+        print(f"[predict_image] img={img_path} best={best_label}:{best_conf:.4f} top_k={top_k}")
+    except Exception:
+        pass
+
+    if best_conf < THRESHOLD:
+        return {"status": "unknown", "confidence": best_conf, "top_k": top_k}
+
+    return {"status": "recognized", "label": best_label, "confidence": best_conf, "top_k": top_k}

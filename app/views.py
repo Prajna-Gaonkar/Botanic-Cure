@@ -56,24 +56,29 @@ def home():
             # Get prediction
             result = predict_image(filepath)
             
-            if result['status'] == 'recognized':
+            # result now contains top_k and debug info
+            top_k = result.get('top_k', [])
+            if result.get('status') == 'recognized':
                 label = result['label']
                 confidence = result['confidence']
                 plant_info = PLANT_INFO.get(label, {})
-                
+
                 return render_template('home.html',
                     username=username,
                     img_url=url_for('static', filename=f'uploads/{filename}'),
                     label=label,
                     confidence=confidence,
-                    info=plant_info
+                    info=plant_info,
+                    top_k=top_k
                 )
-            else:
-                flash('Could not identify the plant in this image.', 'warning')
-                return render_template('home.html',
-                    username=username,
-                    img_url=url_for('static', filename=f'uploads/{filename}')
-                )
+
+            # Low-confidence: show alternatives to the user
+            flash('Could not confidently identify the plant — showing top candidates.', 'warning')
+            return render_template('home.html',
+                username=username,
+                img_url=url_for('static', filename=f'uploads/{filename}'),
+                top_k=top_k
+            )
                 
         except Exception as e:
             flash(f'Error processing image: {str(e)}', 'error')
