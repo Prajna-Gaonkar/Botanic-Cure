@@ -6,7 +6,8 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 # Constants
 IMG_SIZE = (299, 299)
-THRESHOLD = 0.6  # Confidence threshold for predictions (lowered to show likely candidates)
+# Allow easy tuning via environment variable; default lowered to accept reasonable predictions
+THRESHOLD = float(os.environ.get('PRED_THRESHOLD', '0.55'))  # Confidence threshold for predictions
 TOP_K = 3
 
 # Load model and label map

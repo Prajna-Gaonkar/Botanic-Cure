@@ -1,0 +1,51 @@
+{
+  "aloe_vera": {
+    "common_name": "Aloe Vera",
+    "scientific_name": "Aloe vera",
+    "common_growing_areas": "Tropical and subtropical regions worldwide; cultivated in Asia, Africa, Americas",
+    "medicinal_properties": "Topical soothing for burns and wounds; used in cosmetics; gel may have anti-inflammatory and moisturizing properties",
+    "toxic_properties": "Aloe latex (yellow sap) contains anthraquinones that can cause digestive upset if ingested in large amounts; topical use is generally safe for most people"
+  },
+  "aloevera": {
+    "common_name": "Aloe (variant)",
+    "scientific_name": "Aloe vera (variant)",
+    "common_growing_areas": "Similar to Aloe Vera: tropical and subtropical regions",
+    "medicinal_properties": "Soothing, moisturizing; used in topical preparations",
+    "toxic_properties": "Internal use of aloe latex may cause cramps and diarrhea"
+  },
+  "aloeveraa": {
+    "common_name": "Aloe (variant)",
+    "scientific_name": "Aloe (variant)",
+    "common_growing_areas": "Cultivated in warm climates",
+    "medicinal_properties": "Used topically for skin care",
+    "toxic_properties": "Not intended for internal consumption; may cause digestive upset"
+  },
+  "curry": {
+    "common_name": "Curry Leaf",
+    "scientific_name": "Murraya koenigii",
+    "common_growing_areas": "Native to Indian subcontinent; grown in South and Southeast Asia",
+    "medicinal_properties": "Traditionally used as a digestive aid and antioxidant; leaves are used in culinary preparations and folk remedies",
+    "toxic_properties": "Generally regarded as safe when used as food; medicinal dosing should follow professional guidance"
+  },
+  "curry_leaves": {
+    "common_name": "Curry Leaves",
+    "scientific_name": "Murraya koenigii",
+    "common_growing_areas": "India, Sri Lanka, Southeast Asia",
+    "medicinal_properties": "Used in cooking and traditional medicine for digestion and blood sugar support",
+    "toxic_properties": "Safe as food; high-dose extracts should be used cautiously"
+  },
+  "hibiscus": {
+    "common_name": "Hibiscus",
+    "scientific_name": "Hibiscus rosa-sinensis",
+    "common_growing_areas": "Tropical and subtropical regions worldwide",
+    "medicinal_properties": "Used in traditional medicine for mild diuretic effects, antioxidant properties, and hair care preparations",
+    "toxic_properties": "Generally safe in culinary amounts; concentrated extracts should be used with care"
+  },
+  "neem": {
+    "common_name": "Neem",
+    "scientific_name": "Azadirachta indica",
+    "common_growing_areas": "Indian subcontinent, parts of Africa and tropical regions",
+    "medicinal_properties": "Used traditionally for antimicrobial, anti-inflammatory, and skin-care applications; many topical formulations use neem extracts",
+    "toxic_properties": "Neem oil and high-dose internal use can be toxic, particularly to infants and in very large doses; follow professional guidance"
+  }
+}
