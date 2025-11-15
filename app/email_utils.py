@@ -75,3 +75,28 @@ Best regards,
 Botanic Cure Team"""
     
     return send_email(user_email, subject, body)
+
+def send_feedback_email(feedback, user_info=None):
+    """Send feedback email to owner"""
+    owner_email = os.environ.get('OWNER_EMAIL', os.environ.get('SMTP_EMAIL'))  # Fallback to SMTP_EMAIL if OWNER_EMAIL not set
+    
+    subject = "New Feedback from Botanic Cure User"
+    
+    # Add user info if available
+    user_details = ""
+    if user_info:
+        user_details = f"""
+Submitted by:
+Username: {user_info.get('username', 'Anonymous')}
+Email: {user_info.get('email', 'Not provided')}
+"""
+
+    body = f"""New feedback received from Botanic Cure:
+
+{feedback}
+
+{user_details}
+
+Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"""
+    
+    return send_email(owner_email, subject, body)
