@@ -2,5 +2,6 @@ services:
   - type: web
     name: medical-leaf-identification
     env: python
+    pythonVersion: 3.10
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
