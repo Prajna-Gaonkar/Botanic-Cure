@@ -96,15 +96,51 @@ def home():
 
 @main_bp.route("/feedback", methods=["POST"])
 def feedback():
-    """Save feedback from logged-in users."""
-    if "user_id" not in session:
-        flash("Please log in first.", "warning")
-        return redirect(url_for("auth.login"))
+    """Handle user feedback submission and email it to owner."""
+    try:
+        if "user_id" not in session:
+            print("Debug: User not in session")  # Debug log
+            flash("Please log in first.", "warning")
+            return redirect(url_for("auth.login"))
 
-    feedback_text = request.form.get("feedback", "").strip()
-    if not feedback_text:
-        flash("Feedback cannot be empty.", "warning")
+        feedback_text = request.form.get("feedback", "").strip()
+        print(f"Debug: Received feedback: {feedback_text}")  # Debug log
+        
+        if not feedback_text:
+            print("Debug: Empty feedback")  # Debug log
+            flash("Feedback cannot be empty.", "warning")
+            return redirect(url_for("main.home"))
+
+        # Get user info for the feedback email
+        from .models import User
+        user = User.query.get(session["user_id"])
+        print(f"Debug: User info - ID: {session['user_id']}, Found: {user is not None}")  # Debug log
+        
+        if not user:
+            print("Debug: User not found in database")  # Debug log
+            flash("Error: User not found.", "error")
+            return redirect(url_for("main.home"))
+
+        user_info = {
+            "username": user.username,
+            "email": user.email
+        }
+        print(f"Debug: User info prepared: {user_info}")  # Debug log
+
+        # Import and send feedback email
+        from .email_utils import send_feedback_email
+        print("Debug: Attempting to send feedback email")  # Debug log
+        if send_feedback_email(feedback_text, user_info):
+            print("Debug: Email sent successfully")  # Debug log
+            flash("Thanks for your feedback! We'll review it soon.", "success")
+        else:
+            print("Debug: Failed to send email")  # Debug log
+            flash("Thanks for your feedback! However, there was an issue sending it to our team.", "warning")
+        
         return redirect(url_for("main.home"))
-
-    flash("Thanks for your feedback!", "success")
-    return redirect(url_for("main.home"))
+    except Exception as e:
+        print(f"Debug: Error in feedback route: {str(e)}")  # Debug log
+        import traceback
+        traceback.print_exc()  # Print full error traceback
+        flash("An error occurred while sending feedback.", "error")
+        return redirect(url_for("main.home")))
