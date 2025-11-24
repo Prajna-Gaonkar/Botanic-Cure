@@ -5,6 +5,8 @@ import traceback
 from flask import Blueprint, render_template, request, url_for, redirect, session, flash
 
 from .inference import predict_image
+from .models import User
+from .email_utils import send_feedback_email
 
 main_bp = Blueprint('main', __name__)
 
@@ -117,7 +119,23 @@ def feedback():
         
     feedback_text = request.form.get('feedback', '').strip()
     if feedback_text:
-        flash('Thank you for your feedback!', 'success')
+        user_info = {
+            "username": session.get('username', 'User')
+        }
+        try:
+            user = User.query.filter_by(id=session.get('user_id')).first()
+            if user:
+                user_info['email'] = user.email
+        except Exception:
+            pass  # Non-blocking; feedback can still be sent without email
+
+        try:
+            if send_feedback_email(feedback_text, user_info):
+                flash('Thank you! Your feedback was sent to the app owner.', 'success')
+            else:
+                flash('Unable to send feedback right now. Please try again later.', 'error')
+        except Exception as e:
+            flash(f'Failed to send feedback: {str(e)}', 'error')
     else:
         flash('Feedback cannot be empty.', 'warning')
         
