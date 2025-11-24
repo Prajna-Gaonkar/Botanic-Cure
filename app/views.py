@@ -107,7 +107,7 @@ def build_report_pdf(entry, plant_info):
         pdf.set_font("Helvetica", "B", 12)
         pdf.cell(0, 8, "Medicinal Information", ln=True)
         pdf.set_font("Helvetica", size=11)
-        for key in ("common_name", "scientific_name", "common_growing_areas", "medicinal_properties", "toxic_properties"):
+        for key in ("common_name", "scientific_name", "common_growing_areas", "medicinal_properties", "toxic_properties", "storage_methods"):
             value = plant_info.get(key)
             if value:
                 pretty_key = key.replace("_", " ").title()

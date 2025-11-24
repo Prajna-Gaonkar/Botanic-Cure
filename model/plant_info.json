@@ -4,6 +4,7 @@
     "scientific_name": "Aloe vera",
     "common_growing_areas": "Tropical and subtropical regions worldwide; cultivated in Asia, Africa, Americas",
     "medicinal_properties": "Topical soothing for burns and wounds; used in cosmetics; gel may have anti-inflammatory and moisturizing properties",
+    "storage_methods": "Harvest outer leaves, rinse, and refrigerate in airtight bags for up to a week; freeze extracted gel in ice trays for longer storage.",
     "toxic_properties": "Aloe latex (yellow sap) contains anthraquinones that can cause digestive upset if ingested in large amounts; topical use is generally safe for most people"
   },
   "aloevera": {
@@ -11,6 +12,7 @@
     "scientific_name": "Aloe vera (variant)",
     "common_growing_areas": "Similar to Aloe Vera: tropical and subtropical regions",
     "medicinal_properties": "Soothing, moisturizing; used in topical preparations",
+    "storage_methods": "Keep trimmed leaves wrapped in damp cloth inside refrigerator; use within a few days for best potency.",
     "toxic_properties": "Internal use of aloe latex may cause cramps and diarrhea"
   },
   "aloeveraa": {
@@ -18,6 +20,7 @@
     "scientific_name": "Aloe (variant)",
     "common_growing_areas": "Cultivated in warm climates",
     "medicinal_properties": "Used topically for skin care",
+    "storage_methods": "Store in cool conditions away from direct sunlight; processed gel can be refrigerated for 5-7 days.",
     "toxic_properties": "Not intended for internal consumption; may cause digestive upset"
   },
   "curry": {
@@ -25,6 +28,7 @@
     "scientific_name": "Murraya koenigii",
     "common_growing_areas": "Native to Indian subcontinent; grown in South and Southeast Asia",
     "medicinal_properties": "Traditionally used as a digestive aid and antioxidant; leaves are used in culinary preparations and folk remedies",
+    "storage_methods": "Wrap washed leaves in paper towel and refrigerate in airtight container; for long-term use, sun-dry or freeze leaves.",
     "toxic_properties": "Generally regarded as safe when used as food; medicinal dosing should follow professional guidance"
   },
   "curry_leaves": {
@@ -32,6 +36,7 @@
     "scientific_name": "Murraya koenigii",
     "common_growing_areas": "India, Sri Lanka, Southeast Asia",
     "medicinal_properties": "Used in cooking and traditional medicine for digestion and blood sugar support",
+    "storage_methods": "Store fresh sprigs in zip bags lined with tissue; alternatively, dry lightly in shade and keep in airtight jars.",
     "toxic_properties": "Safe as food; high-dose extracts should be used cautiously"
   },
   "hibiscus": {
@@ -39,6 +44,7 @@
     "scientific_name": "Hibiscus rosa-sinensis",
     "common_growing_areas": "Tropical and subtropical regions worldwide",
     "medicinal_properties": "Used in traditional medicine for mild diuretic effects, antioxidant properties, and hair care preparations",
+    "storage_methods": "Use fresh petals immediately or dry them in shade and store in moisture-proof jars; keep hibiscus oil infusions in cool, dark places.",
     "toxic_properties": "Generally safe in culinary amounts; concentrated extracts should be used with care"
   },
   "neem": {
@@ -46,6 +52,7 @@
     "scientific_name": "Azadirachta indica",
     "common_growing_areas": "Indian subcontinent, parts of Africa and tropical regions",
     "medicinal_properties": "Used traditionally for antimicrobial, anti-inflammatory, and skin-care applications; many topical formulations use neem extracts",
+    "storage_methods": "Dry leaves in shade and store in airtight containers; neem oil should be kept in dark glass bottles away from sunlight.",
     "toxic_properties": "Neem oil and high-dose internal use can be toxic, particularly to infants and in very large doses; follow professional guidance"
   }
 }
