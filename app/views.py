@@ -22,6 +22,7 @@ except Exception:
 # Define known species
 KNOWN_SPECIES = {"curry", "hibiscus", "neem", "aloevera"}
 CONFIDENCE_THRESHOLD = 0.6  # You can adjust this value as needed
+NO_MATCH_MESSAGE = "No match found"
 
 def get_prediction_message(top_label, top_conf):
     """
@@ -71,11 +72,19 @@ def home():
             # Get prediction
             result = predict_image(filepath)
             top_k = result.get('top_k', [])
-            if top_k:
+            top_label = result.get('label', '').lower()
+            top_conf = result.get('confidence', 0)
+            if not top_label and top_k:
                 top_label, top_conf = top_k[0][0].lower(), top_k[0][1]
-            else:
-                top_label = result.get('label', '').lower()
-                top_conf = result.get('confidence', 0)
+
+            if result.get('status') != 'recognized':
+                flash(NO_MATCH_MESSAGE, 'warning')
+                return render_template('home.html',
+                    username=username,
+                    img_url=url_for('static', filename=f'uploads/{filename}'),
+                    no_match_message=NO_MATCH_MESSAGE
+                )
+
             is_match, plant_info = get_prediction_message(top_label, top_conf)
             if is_match:
                 return render_template('home.html',
@@ -87,10 +96,11 @@ def home():
                     top_k=top_k
                 )
             else:
-                flash('The uploaded image does not match any species the system is trained to identify.', 'warning')
+                flash(NO_MATCH_MESSAGE, 'warning')
                 return render_template('home.html',
                     username=username,
-                    img_url=url_for('static', filename=f'uploads/{filename}')
+                    img_url=url_for('static', filename=f'uploads/{filename}'),
+                    no_match_message=NO_MATCH_MESSAGE
                 )
                 
         except Exception as e:
