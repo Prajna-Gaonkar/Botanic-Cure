@@ -14,6 +14,7 @@ except Exception:
 # Define known species
 KNOWN_SPECIES = {"curry", "hibiscus", "neem", "aloevera"}
 CONFIDENCE_THRESHOLD = 0.6  # You can adjust this value as needed
+NO_MATCH_MESSAGE = "No match found"
 
 def get_prediction_message(top_label, top_conf):
     """
@@ -24,7 +25,7 @@ def get_prediction_message(top_label, top_conf):
         info = PLANT_INFO.get(top_label, {})
         return f"Label: {top_label}\nConfidence: {top_conf:.2f}\nInfo: {info}"
     else:
-        return "The uploaded image does not match any species the system is trained to identify."
+        return NO_MATCH_MESSAGE
 
 def identify_leaf(image):
     # Save uploaded image temporarily
@@ -32,13 +33,13 @@ def identify_leaf(image):
     image.save(temp_path)
     try:
         result = predict_image(temp_path)
-        # Defensive: get label/confidence from top_k if available
+        top_label = result.get('label', '').lower()
+        top_conf = result.get('confidence', 0)
         top_k = result.get('top_k', [])
-        if top_k:
+        if not top_label and top_k:
             top_label, top_conf = top_k[0][0].lower(), top_k[0][1]
-        else:
-            top_label = result.get('label', '').lower()
-            top_conf = result.get('confidence', 0)
+        if result.get('status') != 'recognized':
+            return NO_MATCH_MESSAGE, image
         message = get_prediction_message(top_label, top_conf)
         return message, image
     except Exception as e:

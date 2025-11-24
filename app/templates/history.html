@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botanic Cure - {{ translations.history_title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+      function toggleDarkMode() {
+        document.body.classList.toggle('bg-green-100');
+        document.body.classList.toggle('bg-gray-900');
+        document.querySelector('.main-card').classList.toggle('bg-white');
+        document.querySelector('.main-card').classList.toggle('bg-gray-800');
+      }
+    </script>
+</head>
+<body class="bg-green-100 flex items-center justify-center min-h-screen transition-colors duration-300">
+  <div class="main-card bg-white p-8 rounded-2xl shadow-2xl w-full max-w-3xl transition-colors duration-300">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-3xl font-extrabold text-green-700">🌿 Botanic Cure</h1>
+      <button onclick="toggleDarkMode()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded transition">🌙</button>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+      <form method="POST" action="{{ url_for('main.set_language') }}">
+        <select id="language" name="language" class="border border-green-300 rounded px-2 py-1 text-sm" onchange="this.form.submit()">
+          {% for code, info in language_options.items() %}
+            <option value="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ info.label }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{{ url_for('main.home') }}" class="inline-block bg-white border border-green-400 text-green-700 px-3 py-1 rounded hover:bg-green-50 transition text-sm font-medium">
+        ← {{ translations.history_back_button }}
+      </a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-green-700 mb-4">{{ translations.history_title }}</h2>
+
+    {% if entries %}
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-green-50 text-green-800">
+            <tr>
+              <th class="px-4 py-2 text-left">{{ translations.history_table_filename }}</th>
+              <th class="px-4 py-2 text-left">{{ translations.history_table_status }}</th>
+              <th class="px-4 py-2 text-left">{{ translations.history_table_label }}</th>
+              <th class="px-4 py-2 text-left">{{ translations.history_table_confidence }}</th>
+              <th class="px-4 py-2 text-left">{{ translations.history_table_uploaded }}</th>
+              <th class="px-4 py-2 text-left">{{ translations.download_report_button }}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for entry in entries %}
+              {% set display_file = entry.preview_filename or entry.stored_filename %}
+              {% set is_image = display_file and (display_file.lower().endswith('.png') or display_file.lower().endswith('.jpg') or display_file.lower().endswith('.jpeg')) %}
+              <tr class="hover:bg-gray-50">
+                <td class="px-4 py-3">
+                  {% if is_image %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ display_file) }}" alt="{{ entry.original_filename }}" class="w-24 h-24 object-cover rounded border border-gray-200">
+                  {% else %}
+                    <span class="text-gray-700">{{ entry.original_filename }}</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3 font-medium">
+                  {% if entry.status == 'recognized' %}
+                    <span class="text-green-600">{{ translations.history_status_recognized }}</span>
+                  {% else %}
+                    <span class="text-yellow-600">{{ translations.history_status_unknown }}</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3 text-gray-700">{{ entry.label or '-' }}</td>
+                <td class="px-4 py-3 text-gray-700">
+                  {% if entry.confidence is not none %}
+                    {{ "%.2f"|format(entry.confidence * 100) }}%
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3 text-gray-600 text-sm">
+                  {{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}
+                </td>
+                <td class="px-4 py-3">
+                  {% if entry.status == 'recognized' %}
+                    <a href="{{ url_for('main.download_report', entry_id=entry.id) }}" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-semibold transition">
+                      {{ translations.download_report_button }}
+                    </a>
+                  {% else %}
+                    <span class="text-gray-400">-</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-gray-600 text-center py-6">{{ translations.history_empty }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
+

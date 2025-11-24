@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from . import db
 
 class User(db.Model):
@@ -17,3 +19,23 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+
+class UploadHistory(db.Model):
+    """Stores the upload history for each user."""
+    __tablename__ = 'upload_history'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    original_filename = db.Column(db.String(255), nullable=False)
+    stored_filename = db.Column(db.String(255), nullable=False)
+    preview_filename = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(50), nullable=False)
+    label = db.Column(db.String(80), nullable=True)
+    confidence = db.Column(db.Float, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('upload_history', lazy=True))
+
+    def __repr__(self):
+        return f'<UploadHistory {self.original_filename} ({self.status})>'

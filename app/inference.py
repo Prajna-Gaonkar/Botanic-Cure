@@ -10,6 +10,27 @@ IMG_SIZE = (299, 299)
 THRESHOLD = float(os.environ.get('PRED_THRESHOLD', '0.55'))  # Confidence threshold for predictions
 TOP_K = 3
 
+# Allowed species (normalized names) and helper map for aliases
+KNOWN_SPECIES = {"curry", "neem", "aloevera", "hibiscus"}
+SPECIES_NORMALIZATION = {
+    "aloe_vera": "aloevera",
+    "aloevera": "aloevera",
+    "aloeveraa": "aloevera",
+    "curry": "curry",
+    "curry_leaves": "curry",
+    "hibiscus": "hibiscus",
+    "hibiscuss": "hibiscus",
+    "neem": "neem",
+}
+
+
+def normalize_label(label):
+    """Normalize raw model labels to one of the supported species."""
+    if not label:
+        return ""
+    return SPECIES_NORMALIZATION.get(label.lower(), label.lower())
+
+
 # Load model and label map
 MODEL_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model", "xception_botanicure.h5")
 LABELMAP_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model", "label_map.json")
@@ -34,7 +55,8 @@ def predict_image(img_path):
     # Get top-k indices and confidences
     top_idxs = np.argsort(probs)[::-1][:TOP_K]
     top_probs = probs[top_idxs]
-    top_labels = [inv_map.get(str(int(i)), inv_map.get(int(i), str(i))) for i in top_idxs]
+    raw_labels = [inv_map.get(str(int(i)), inv_map.get(int(i), str(i))) for i in top_idxs]
+    top_labels = [normalize_label(label) for label in raw_labels]
     top_k = [(label, float(conf)) for label, conf in zip(top_labels, top_probs)]
 
     best_idx = int(top_idxs[0])
@@ -47,7 +69,18 @@ def predict_image(img_path):
     except Exception:
         pass
 
-    if best_conf < THRESHOLD:
-        return {"status": "unknown", "confidence": best_conf, "top_k": top_k}
+    if best_conf < THRESHOLD or best_label not in KNOWN_SPECIES:
+        return {
+            "status": "unknown",
+            "label": best_label,
+            "confidence": best_conf,
+            "top_k": top_k,
+            "message": "No match found",
+        }
 
-    return {"status": "recognized", "label": best_label, "confidence": best_conf, "top_k": top_k}
+    return {
+        "status": "recognized",
+        "label": best_label,
+        "confidence": best_conf,
+        "top_k": top_k,
+    }
