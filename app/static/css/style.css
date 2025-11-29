@@ -9,18 +9,30 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0fff4;
+    background-image: linear-gradient(rgba(4, 51, 34, 0.7), rgba(4, 30, 19, 0.85)), url('../images/plant-blur.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: #2d6a4f;
     display: flex;
     justify-content: center;
     padding: 2rem;
   }
   .container {
-    background: white;
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     padding: 2rem;
     width: 500px;
-    box-shadow: 0 6px 15px rgba(45, 106, 79, 0.3);
+    box-shadow: 0 25px 60px rgba(15, 32, 24, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
   }
+.main-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 25px 65px rgba(4, 25, 17, 0.35);
+    backdrop-filter: blur(18px);
+}
 .login-box{
     display: flex;
     justify-content: center;

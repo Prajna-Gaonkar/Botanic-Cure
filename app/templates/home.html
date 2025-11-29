@@ -80,6 +80,9 @@
           {% if info.toxic_properties %}
             <p><strong>Toxicological properties:</strong> {{ info.toxic_properties }}</p>
           {% endif %}
+          {% if info.storage_methods %}
+            <p><strong>Storage methods:</strong> {{ info.storage_methods }}</p>
+          {% endif %}
         </div>
         {% endif %}
         {% if history_id %}
