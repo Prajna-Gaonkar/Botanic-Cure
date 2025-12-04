@@ -143,4 +143,4 @@ def feedback():
         import traceback
         traceback.print_exc()  # Print full error traceback
         flash("An error occurred while sending feedback.", "error")
-        return redirect(url_for("main.home")))
+        return redirect(url_for("main.home"))
