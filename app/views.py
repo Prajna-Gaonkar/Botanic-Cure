@@ -121,9 +121,9 @@ def build_report_pdf(entry, plant_info):
 
 @main_bp.route('/')
 def index():
-    if not session.get('user_id'):
-        return redirect(url_for('auth.login'))
-    return redirect(url_for('main.home'))
+    if session.get('user_id'):
+        return redirect(url_for('main.home'))
+    return render_template('get_started.html')
 
 @main_bp.route('/home', methods=['GET', 'POST'])
 def home():
