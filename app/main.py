@@ -19,12 +19,13 @@ try:
 except Exception:
     PLANT_INFO = {}
 
+
+# Show get started page at root
 @main_bp.route("/")
 def root():
-    """Keep the root URL simple: if logged in, go to home; otherwise go to login."""
     if session.get("user_id"):
         return redirect(url_for("main.home"))
-    return redirect(url_for("auth.login"))
+    return render_template("get_started.html")
 
 @main_bp.route("/home", methods=["GET", "POST"])
 def home():

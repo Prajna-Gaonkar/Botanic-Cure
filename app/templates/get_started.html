@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - Botanic Cure</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+      .get-started-bg {
+        background-image: url('{{ url_for('static', filename='images/plant-blur.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        min-width: 100vw;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0; left: 0;
+        overflow: hidden;
+      }
+      .get-started-bg::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        width: 100vw; height: 100vh;
+        background: rgba(20, 83, 45, 0.5); /* match login overlay */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 0;
+      }
+      .get-started-overlay {
+        position: relative;
+        z-index: 1;
+      }
+      .get-started-overlay {
+        min-height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+</head>
+<body class="get-started-bg">
+  <div class="get-started-overlay">
+    <div class="container mx-auto max-w-md bg-white bg-opacity-90 rounded-2xl shadow-2xl p-10 flex flex-col items-center">
+      <div class="flex flex-col items-center mb-4">
+        <span class="icon text-6xl mb-2">🍃</span>
+      </div>
+      <h1 class="text-3xl font-extrabold mb-4 text-green-800">Botanic Cure</h1>
+      <p class="text-base mb-2 text-gray-700 text-center">Welcome to your personal medicinal plant identifier!</p>
+      <p class="text-base mb-2 text-gray-700 text-center">Snap or upload a leaf photo to instantly discover the plant's name, uses, and properties.</p>
+      <p class="text-base mb-8 text-gray-700 text-center">Empowering you with knowledge about nature's pharmacy, right at your fingertips.</p>
+      <a href="{{ url_for('auth.login') }}" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full text-lg font-bold transition">
+        Get Started
+        <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
