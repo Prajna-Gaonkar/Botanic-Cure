@@ -50,7 +50,7 @@
     <!-- Upload Form -->
     <form method="POST" enctype="multipart/form-data" class="mb-4">
       <label for="leaf_image" class="block text-left mb-1 text-green-700 font-medium">{{ translations.upload_label }}</label>
-      <input type="file" id="leaf_image" name="leaf_image" accept=".pdf,.png,.jpg,.jpeg" class="mb-2 w-full border border-green-300 rounded px-2 py-1" required title="Upload a PDF, JPG, or PNG file">
+      <input type="file" id="leaf_image" name="leaf_image" accept=".pdf,.png,.jpg,.jpeg" capture="environment" class="mb-2 w-full border border-green-300 rounded px-2 py-1" required title="Upload a PDF, JPG, or PNG file">
       <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full font-semibold">{{ translations.upload_button }}</button>
     </form>
 

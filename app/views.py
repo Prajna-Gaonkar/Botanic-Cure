@@ -360,12 +360,15 @@ def feedback():
 
         current_lang = get_current_language()
         try:
+            import os
+            smtp_server = os.environ.get('SMTP_SERVER')
+            print(f"[DEBUG] SMTP_SERVER env (Flask): {smtp_server}")
             if send_feedback_email(feedback_text, user_info):
                 flash(get_translation(current_lang, 'flash_feedback_success'), 'success')
             else:
                 flash(get_translation(current_lang, 'flash_feedback_fail'), 'error')
         except Exception as e:
-            flash(f'Failed to send feedback: {str(e)}', 'error')
+            flash(f'Failed to send feedback: {str(e)} (SMTP_SERVER={smtp_server})', 'error')
     else:
         flash(get_translation(get_current_language(), 'flash_feedback_empty'), 'warning')
         
